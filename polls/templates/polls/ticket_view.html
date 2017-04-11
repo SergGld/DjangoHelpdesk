@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+</head>
+<body>
+<ul>
+    {% for ticket in latest_ticket_list %}
+        <li>
+            <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
+        </li>
+        <div class="excerpt">
+           {{ticket.message}}
+        </div>
+    {% endfor %}
+    </ul>
+</body>
+</html>
