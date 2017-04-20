@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User, UserManager
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 import datetime
 
 # Create your models here.
@@ -36,7 +38,8 @@ class Ticket(models.Model):
         (DUPLICATE_STATUS, _('Duplicate')),
     )
     user=models.ForeignKey(settings.AUTH_USER_MODEL)
-    message=models.TextField(max_length=200)
+    message=models.TextField()
+    resolution = models.TextField(null=True)
     created=models.DateTimeField('date published')
     title = models.TextField(max_length=100)
     ticketState = models.IntegerField(
@@ -49,6 +52,21 @@ class Ticket(models.Model):
 
     #adminId = ""
 
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     bio = models.TextField(max_length=500, blank=True)
+#     location = models.CharField(max_length=30, blank=True)
+#     birth_date = models.DateField(null=True, blank=True)
+#
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(user=instance)
+#
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.profile.save()
+#
 
 class CustomUser(User):
     """User with app settings."""

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        {% load staticfiles %}
+    {% load widget_tweaks %}
+    <link rel="stylesheet" type="text/css" href="{% static 'helpdesk/style.css' %}" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body id="helpdesk-body">
+
+    <div id='container' class="container">
+        <div id='header' class="row">
+            <h1>{% block h1_title %}"Helpdesk"{% endblock %}</h1>
+            {% include "helpdesk/navigation.html" %}
+        </div>
+
+        <div id='body' class="row">
+            {% block helpdesk_body %}{% endblock %}
+        </div>
+
+        <div id='footer' class="row">
+{#            <div class="col-md-2">{% include "helpdesk/attribution.html" %}</div>#}
+        </div>
+    </div>
+</body>
+</html>

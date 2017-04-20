@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('auth', '0008_alter_user_username_max_length'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('polls', '0001_initial'),
+        ('helpdesk', '0001_initial'),
     ]
 
     operations = [
