@@ -1,20 +1,24 @@
 from django import forms
-from .models import CustomUser, Ticket
+from .models import CustomUser, Ticket,Categories
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django_comp.roles import ROLES
 
 class CreateTicketForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(CreateTicketForm, self).__init__(*args, **kwargs)
     title = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.Textarea)
-
+    category=forms.ModelChoiceField(queryset = Categories.objects.all())
     def save(self):
         # topic = self.cleaned_data['subject']
         # message = self.cleaned_data['message']
         # sender = self.cleaned_data['sender']
         ticket = Ticket(title=self.cleaned_data['title'],
                         created=timezone.now(),
+                        user=self.user,
                         ticketState=Ticket.OPEN_STATUS,
                         message=self.cleaned_data['message'],
                         )

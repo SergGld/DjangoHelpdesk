@@ -1,0 +1,6 @@
+{% extends "helpdesk/base.html" %}
+{% block helpdesk_body %}
+<h1>{{ ticket.title }}</h1>
+<p>{{ ticket.message }}</p>
+<p>{{ ticket.resolution }}</p>
+{% endblock %}

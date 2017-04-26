@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from .forms import CreateTicketForm, LoginForm, AnswerForm
 # from .models import Choice, Question
-from .models import CustomUser, Ticket
+from .models import CustomUser, Ticket,Categories
 from django.contrib.auth import authenticate, login
 from django.http import Http404
 from django.template import RequestContext, loader
@@ -14,6 +14,9 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from rolepermissions.roles import assign_role
 from django_comp.roles import *
+from notify.signals import notify
+from django.contrib import auth
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 # def index(request):
@@ -76,13 +79,30 @@ def login_view(request):
               except IntegrityError:
                     return HttpResponse('Данный пользователь уже существует.', content_type='text/html')
     return render(request, 'helpdesk/login.html', {'form':form})
-
+def logout(request):
+    auth.logout(request)
+    # Перенаправление на страницу.
+    return HttpResponseRedirect("/helpdesk")
+def user_homepage(request):
+    user_tickets = Ticket.objects.filter(user=request.user).filter(ticketState=Ticket.OPEN_STATUS)
+    resolved_tickets = Ticket.objects.filter(user=request.user).filter(ticketState=Ticket.RESOLVED_STATUS)
+    # ticket=get_object_or_404(Ticket, pk=ticket_id)
+    return render(request, 'helpdesk/user_homepage.html', {
+        'user_tickets': user_tickets,
+        'resolved_tickets': resolved_tickets,
+    })
 def base_view(request):
-    return render(request, 'helpdesk/base.html', {})
+    return render(request, 'helpdesk/user_homepage.html', {})
 
+@csrf_protect
 def post_new(request):
+    categories=Categories.objects.all()
+    # if 'ajax' in request.POST:
     if request.method == "POST":
-        form = CreateTicketForm(request.POST)
+        if request.is_ajax():
+            cat=request.POST.get('cat', '')
+            category=Categories.objects.get(pk=cat)
+        form = CreateTicketForm(request.POST,user=request.user,category=category)
         if form.is_valid():
             post = form.save()
             post.user=request.user
@@ -90,7 +110,7 @@ def post_new(request):
             return render(request, 'helpdesk/create_ticket.html', {'form': form})
     else:
         form = CreateTicketForm()
-    return render(request, 'helpdesk/create_ticket.html', {'form': form})
+    return render(request, 'helpdesk/create_ticket.html', {'form': form,'categories':categories})
 
 def ticket_list(request):
     latest_ticket_list = Ticket.objects.order_by('-created')[:5]
@@ -102,12 +122,28 @@ def ticket_list(request):
 
 def ticket(request,ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
-    form = AnswerForm();
+    form = AnswerForm()
+    if request.method == "POST":
+        resolution = request.POST.get('resolution', '')
+        ticket.resolution=resolution
+        ticket.ticketState = Ticket.RESOLVED_STATUS
+        ticket.save()
+        notify.send(request.user, recipient=ticket.user, actor=request.user,
+        verb = 'followed you.', nf_type = 'followed_by_one_user')
     # if not _has_access_to_queue(request.user, ticket.queue):
     #     raise PermissionDenied()
-    return render(request, 'helpdesk/ticket.html', {
+    return render(request, 'helpdesk/ticket_staff.html', {
         'ticket': ticket,
         'form': form,
+        # 'form': form,
+    })
+def ticket_user(request,ticket_id):
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
+
+    # if not _has_access_to_queue(request.user, ticket.queue):
+    #     raise PermissionDenied()
+    return render(request, 'helpdesk/ticket_user.html', {
+        'ticket': ticket,
         # 'form': form,
     })
 def user_profile():
@@ -150,7 +186,7 @@ def user_profile():
 #
 # class ResultsView(generic.DetailView):
 #     model = Question
-#     template_name = 'helpdesk/ticket.html'
+#     template_name = 'helpdesk/ticket_staff.html'
 #
 #
 #
@@ -177,6 +213,6 @@ def user_profile():
 #
 # def results(request, question_id):
 #     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'helpdesk/ticket.html', {'question': question})
+#     return render(request, 'helpdesk/ticket_staff.html', {'question': question})
 
 

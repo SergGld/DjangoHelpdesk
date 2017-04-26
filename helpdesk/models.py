@@ -22,7 +22,10 @@ import datetime
 #     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 #     choice_text = models.CharField(max_length=200)
 #     votes = models.IntegerField(default=0)
-
+class Categories(models.Model):
+    name=models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 class Ticket(models.Model):
     OPEN_STATUS = 1
     REOPENED_STATUS = 2
@@ -38,6 +41,7 @@ class Ticket(models.Model):
         (DUPLICATE_STATUS, _('Duplicate')),
     )
     user=models.ForeignKey(settings.AUTH_USER_MODEL)
+    category = models.ForeignKey(Categories,null=True,default="Другое")
     message=models.TextField()
     resolution = models.TextField(null=True)
     created=models.DateTimeField('date published')

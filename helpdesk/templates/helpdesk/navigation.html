@@ -7,11 +7,12 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="custome-active"><a href="#home">Home</a></li>
-                    <li><a href="/helpdesk/create">Create ticket</a></li>
+					<li class="custome-active"><a href="{% url 'helpdesk:index' %}">Home</a></li>
+                    <li><a href="{% url 'helpdesk:create' %}">Create ticket</a></li>
                     {% if user|has_role:'Staff' %}
-					    <li><a href="/helpdesk/tickets">Tickets</a></li>
+					    <li><a href="{% url 'helpdesk:tickets' %}">Tickets</a></li>
                     {% endif %}
+                    <li><a href="{% url 'helpdesk:logout' %}">Logout</a></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
