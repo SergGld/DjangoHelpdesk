@@ -12,9 +12,6 @@ h3{
     margin: 0;
     color: #3b4045;
 }
-
-
-
 body {
     padding-top: 90px;
 }
@@ -191,5 +188,12 @@ body {
   }
 }
 
+#back-to-category{
+	padding-top:20px;
+	font-size:2.8em;
+	text-decoration: none;
+}
 
-
+.carousel-inner{
+	padding-bottom:300px;
+}

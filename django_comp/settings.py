@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'rolepermissions',
     'notify',
+    'bootstrapform',
 ]
 
 MIDDLEWARE = [
@@ -128,7 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 AUTH_USER_MODEL = 'auth.User'
 
 ROLEPERMISSIONS_MODULE = 'django_comp.roles'

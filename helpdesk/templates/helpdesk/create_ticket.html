@@ -1,8 +1,8 @@
 {% extends "helpdesk/base.html" %}
-
+{% load bootstrap %}
 {% block helpdesk_body %}
-        <h1>New post</h1>
-
+        <h1>Создание заявки</h1>
+    <hr>
     <div class="row">
         <div class="col-md-12">
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -25,18 +25,16 @@
                     </div>
                     <div class="item">
                         <h2>Опишите проблему</h2>
-                        <h3 class="cat"></h3>
                                <form method="POST" class="post-form">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Save</button>
+            {{ form|bootstrap }}
+            <button type="submit" class="save btn btn-default">Отправить</button>
         </form>
+                          <a id="back-to-category"  class="glyphicon glyphicon-chevron-left" href="#carousel-example-generic" data-slide="prev">
+                    </a>
                     </div>
 
                 </div>
-                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span></a><a class="right carousel-control"
-                        href="#carousel-example-generic" data-slide="next"><span class="glyphicon glyphicon-chevron-right">
-                        </span></a>
+
             </div>
         </div>
     </div>

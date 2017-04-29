@@ -42,7 +42,7 @@ class Ticket(models.Model):
         (DUPLICATE_STATUS, _('Duplicate')),
     )
     user=models.ForeignKey(settings.AUTH_USER_MODEL)
-    category = models.ForeignKey(Categories,null=True,default="Другое")
+    category = models.ForeignKey(Categories,null=True,default=0)
     message=models.TextField()
     resolution = models.TextField(null=True)
     created=models.DateTimeField('date published')

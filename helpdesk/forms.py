@@ -9,6 +9,10 @@ class CreateTicketForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(CreateTicketForm, self).__init__(*args, **kwargs)
+        self.fields['title'].label = "Название"
+        self.fields['message'].label = "Ваше сообщение"
+        self.fields['category'].label = "Категория"
+
     title = forms.CharField(max_length=100)
     message = forms.CharField(widget=forms.Textarea)
     category=forms.ModelChoiceField(queryset = Categories.objects.all())
@@ -19,6 +23,7 @@ class CreateTicketForm(forms.Form):
         ticket = Ticket(title=self.cleaned_data['title'],
                         created=timezone.now(),
                         user=self.user,
+                        category=self.cleaned_data['category'],
                         ticketState=Ticket.OPEN_STATUS,
                         message=self.cleaned_data['message'],
                         )

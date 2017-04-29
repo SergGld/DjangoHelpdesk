@@ -1,13 +1,16 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
+    {% for category in categories %}
+        <h2><a href="{{ category.id }}">{{ category.name }}</a></h2>
 <ul>
     {% for ticket in latest_ticket_list %}
         <li>
-            <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
+            <h3><a href="{{ ticket.id }}">{{ ticket.title }}({{ ticket.category }})</a></h3>
         </li>
 {#        <div class="excerpt">#}
 {#           {{ticket.message}}#}
 {#        </div>#}
     {% endfor %}
     </ul>
+    {% endfor %} }}
 {% endblock %}

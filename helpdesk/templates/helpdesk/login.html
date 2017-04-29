@@ -118,10 +118,10 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-6">
-								<a href="#" class="active" id="login-form-link">Login</a>
+								<a href="#" class="active" id="login-form-link">Вход</a>
 							</div>
 							<div class="col-xs-6">
-								<a href="#" id="register-form-link">Register</a>
+								<a href="#" id="register-form-link">Регистрация</a>
 							</div>
 						</div>
 						<hr>
@@ -132,20 +132,20 @@
 								<form id="login-form"  method="POST" role="form" style="display: block;">{% csrf_token %}
 									<div class="form-group">
 {#										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">#}
-                                        {{ form.username|attr:"class:form-control"|attr:"placeholder:Username" }}
+                                        {{ form.username|attr:"class:form-control"|attr:"placeholder:Имя пользователя" }}
 									</div>
 									<div class="form-group">
 {#										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">#}
-                                        {{ form.password|attr:"class:form-control"|attr:"placeholder:Password" }}
+                                        {{ form.password|attr:"class:form-control"|attr:"placeholder:Пароль" }}
 									</div>
 									<div class="form-group text-center">
 										<input type="checkbox" tabindex="3" class="" name="remember" id="remember">
-										<label for="remember"> Remember Me</label>
+										<label for="remember"> Запомнить</label>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Войти">
 											</div>
 										</div>
 									</div>
@@ -153,7 +153,7 @@
 										<div class="row">
 											<div class="col-lg-12">
 												<div class="text-center">
-													<a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+													<a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Забыли пароль?</a>
 												</div>
 											</div>
 										</div>
@@ -162,27 +162,27 @@
 								<form id="register-form"  method="POST" role="form" style="display: none;">{% csrf_token %}
 									<div class="form-group">
 {#										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">#}
-                                        {{ form.username_reg|attr:"class:form-control"|attr:"placeholder:Username"|attr:"id:username_id" }}
+                                        {{ form.username_reg|attr:"class:form-control"|attr:"placeholder:Имя пользователя"|attr:"id:username_id" }}
 									</div>
 {#									<div class="form-group">#}
 {#										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">#}
 {#									</div>#}
 									<div class="form-group">
 {#										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">#}
-                                        {{ form.password_reg|attr:"class:form-control"|attr:"placeholder:Password"|attr:"id:reg_password" |attr:"autocomplete=off"|attr:"id=username_id"}}
+                                        {{ form.password_reg|attr:"class:form-control"|attr:"placeholder:Пароль"|attr:"id:reg_password" |attr:"autocomplete=off"|attr:"id=username_id"}}
 									</div>
 									<div class="form-group">
 {#										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">#}
-                                        {{ form.password_again|attr:"class:form-control"|attr:"placeholder:Confirm Password"|attr:"id:confirm_reg_password"|attr:"autocomplete=off" }}
+                                        {{ form.password_again|attr:"class:form-control"|attr:"placeholder:Повторите пароль"|attr:"id:confirm_reg_password"|attr:"autocomplete=off" }}
 									</div>
                                     <div class="form-group">
 {#										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">#}
-                                        {{ form.role|attr:"class:form-control"|attr:"placeholder:Role"|attr:"id:role_idte" }}
+                                        {{ form.role|attr:"class:form-control"|attr:"placeholder:Должность"|attr:"id:role_idte" }}
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Зарегистрироваться">
 											</div>
 										</div>
 									</div>

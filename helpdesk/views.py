@@ -99,10 +99,8 @@ def post_new(request):
     categories=Categories.objects.all()
     # if 'ajax' in request.POST:
     if request.method == "POST":
-        if request.is_ajax():
-            cat=request.POST.get('cat', '')
-            category=Categories.objects.get(pk=cat)
-        form = CreateTicketForm(request.POST,user=request.user,category=category)
+
+        form = CreateTicketForm(request.POST,user=request.user)
         if form.is_valid():
             post = form.save()
             post.user=request.user
@@ -114,10 +112,11 @@ def post_new(request):
 
 def ticket_list(request):
     latest_ticket_list = Ticket.objects.order_by('-created')[:5]
+    categories=Categories.objects.all()
     # ticket=get_object_or_404(Ticket, pk=ticket_id)
     return render(request, 'helpdesk/tickets.html', {
+        'categories':categories,
         'latest_ticket_list': latest_ticket_list,
-        'error_message': "You didn't select a choice.",
     })
 
 def ticket(request,ticket_id):

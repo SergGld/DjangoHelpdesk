@@ -3,6 +3,6 @@
  */
    function MyFunction(category) {
     $("#carousel-example-generic").carousel("next");
-    $('.cat').html(category)
+    // $( "a:hidden" ).show("slow")
     $("#id_category").val(category);
 }
