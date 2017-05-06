@@ -197,3 +197,20 @@ body {
 .carousel-inner{
 	padding-bottom:300px;
 }
+
+
+#resolution[readonly]{
+	cursor:text;
+	background-color: aquamarine;
+}
+#id_title[readonly]{
+	cursor:text;
+	margin-bottom: 20px;
+}
+#ticket-message[readonly]{
+	cursor:text;
+	margin-bottom: 20px;
+}
+.ticket-answer{
+	margin-top:50px;
+}

@@ -1,6 +1,9 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
 <div class="tabbed">
+<div class="user-message">
+    <p>{{ user_message }}</p>
+</div>
 <h1>Ваши заявки</h1>
 <hr>
     <input type="radio" name="tabs" id="tab-nav-1" checked>

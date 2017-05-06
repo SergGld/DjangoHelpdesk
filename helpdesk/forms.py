@@ -44,7 +44,10 @@ class LoginForm(forms.Form):
     password_again = forms.CharField(widget=forms.PasswordInput())
     role = forms.ChoiceField(choices=ROLES)
 class AnswerForm(forms.Form):
+    # def __init__(self, *args, **kwargs):
+    #     self.fields['resolution'].label = "Ответ"
     resolution = forms.CharField(widget=forms.Textarea)
+    resolution.label="Ответ"
     #
     #
     # def get_username(self):

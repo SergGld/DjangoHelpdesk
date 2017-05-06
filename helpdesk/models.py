@@ -27,6 +27,8 @@ class Categories(models.Model):
     name=models.CharField(max_length=100)
     def __str__(self):
         return self.name
+    def tickets(self):
+        return Ticket.objects.filter(category=self)
 class Ticket(models.Model):
     OPEN_STATUS = 1
     REOPENED_STATUS = 2
@@ -42,16 +44,21 @@ class Ticket(models.Model):
         (DUPLICATE_STATUS, _('Duplicate')),
     )
     user=models.ForeignKey(settings.AUTH_USER_MODEL)
+    staff=models.ForeignKey(settings.AUTH_USER_MODEL,null=True,related_name='resolver')
     category = models.ForeignKey(Categories,null=True,default=0)
     message=models.TextField()
     resolution = models.TextField(null=True)
     created=models.DateTimeField('date published')
+    resolved=models.DateTimeField('date published',null=True)
     title = models.TextField(max_length=100)
     ticketState = models.IntegerField(
         _('Status'),
         choices=STATUS_CHOICES,
         default=OPEN_STATUS,
     )
+    def __str__(self):
+        return self.title
+
 
     #Future fields
 

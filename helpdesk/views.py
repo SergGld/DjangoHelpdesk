@@ -13,24 +13,13 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.http import JsonResponse
 from rolepermissions.roles import assign_role
+from rolepermissions.roles import get_user_roles
 from django_comp.roles import *
 from notify.signals import notify
 from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
-
-# Create your views here.
-# def index(request):
-#     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-#     context = {'latest_question_list': latest_question_list}
-#     return render(request, 'helpdesk/login.html', context)
-#
-# def detail(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'helpdesk/detail.html', {'question': question})
-#
-# def results(request, question_id):
-#     response = "You're looking at the results of question %s."
-#     return HttpResponse(response % question_id)
+from datetime import datetime
+from django.contrib.auth import get_user_model
 
 def validate_username(request):
     """
@@ -65,11 +54,12 @@ def login_view(request):
 
             return HttpResponse('Неправильное имя или пароль', content_type='text/html')
         elif 'register' in request.POST:
+              print('xd')
               username = request.POST.get('username_reg', '')
               password = request.POST.get('password_reg', '')
               role = request.POST.get('role','')
               try:
-                    user = User.objects.create_user(username=username,
+                    user = get_user_model().objects.create_user(username=username,
                                                   password=password)
                     print(role)
                     assign_role(user, role)
@@ -79,6 +69,7 @@ def login_view(request):
               except IntegrityError:
                     return HttpResponse('Данный пользователь уже существует.', content_type='text/html')
     return render(request, 'helpdesk/login.html', {'form':form})
+
 def logout(request):
     auth.logout(request)
     # Перенаправление на страницу.
@@ -91,8 +82,6 @@ def user_homepage(request):
         'user_tickets': user_tickets,
         'resolved_tickets': resolved_tickets,
     })
-def base_view(request):
-    return render(request, 'helpdesk/user_homepage.html', {})
 
 @csrf_protect
 def post_new(request):
@@ -105,16 +94,22 @@ def post_new(request):
             post = form.save()
             post.user=request.user
             post.save()
-            return render(request, 'helpdesk/create_ticket.html', {'form': form})
+            # return HttpResponseRedirect("/helpdesk/index")
+            classname='3';
+            return HttpResponseRedirect(reverse('helpdesk:index'))
+            # return render(request, 'helpdesk/user_homepage.html', {'user_message': 'Ваша заявка передана на рассмотрение.'})
+            # return HttpResponse('Ваша заявка передана на рассмотрение', content_type='text/html')
     else:
         form = CreateTicketForm()
     return render(request, 'helpdesk/create_ticket.html', {'form': form,'categories':categories})
 
 def ticket_list(request):
-    latest_ticket_list = Ticket.objects.order_by('-created')[:5]
+    latest_ticket_list = Ticket.objects.filter(ticketState=Ticket.OPEN_STATUS).order_by('-created')
+    my_ticket = Ticket.objects.filter(staff=request.user).filter(ticketState=Ticket.RESOLVED_STATUS).order_by('-resolved')
     categories=Categories.objects.all()
     # ticket=get_object_or_404(Ticket, pk=ticket_id)
     return render(request, 'helpdesk/tickets.html', {
+        'my_ticket':my_ticket,
         'categories':categories,
         'latest_ticket_list': latest_ticket_list,
     })
@@ -126,9 +121,12 @@ def ticket(request,ticket_id):
         resolution = request.POST.get('resolution', '')
         ticket.resolution=resolution
         ticket.ticketState = Ticket.RESOLVED_STATUS
+        ticket.staff=request.user
+        ticket.resolved=datetime.now()
         ticket.save()
         notify.send(request.user, recipient=ticket.user, actor=request.user,
         verb = 'followed you.', nf_type = 'followed_by_one_user')
+        return HttpResponseRedirect(reverse('helpdesk:tickets'))
     # if not _has_access_to_queue(request.user, ticket.queue):
     #     raise PermissionDenied()
     return render(request, 'helpdesk/ticket_staff.html', {
@@ -145,73 +143,26 @@ def ticket_user(request,ticket_id):
         'ticket': ticket,
         # 'form': form,
     })
-def user_profile():
+def user_profile(request):
     """
             View for user profile page.
     """
-    return;
+    user=request.user
+    try:
+        role = get_user_roles(user)[0].name
+    except:
+        role = 'Администратор'
+    return render(request, 'helpdesk/user_profile.html', {
+        'username': user,
+        'role': role,
+        # 'form': form,
+    })
 
+def thanks(request):
+    return render(request, 'helpdesk/thanks.html', {
+        'ticket': ticket,
+        # 'form': form,
+    })
 
-# def index(request):
-#     some="";
-#     return render(request, 'helpdesk/login.html', {
-#         'some': some,
-#         'error_message': "You didn't select a choice.",
-#     })
-# class TicketsView(generic.ListView):
-#     template_name = 'helpdesk/tickets.html'
-#     context_object_name = 'latest_ticket_list'
-#
-#     def get_queryset(self):
-#         """Return the last five published questions."""
-#         return Ticket.objects.order_by('-created')[:5]
-#
-#
-
-
-# class IndexView(generic.ListView):
-#     template_name = 'helpdesk/login.html'
-#     context_object_name = 'latest_question_list'
-#
-#     def get_queryset(self):
-#         """Return the last five published questions."""
-#         return Question.objects.order_by('-pub_date')[:5]
-#
-#
-# class DetailView(generic.DetailView):
-#     model = Question
-#     template_name = 'helpdesk/detail.html'
-#
-#
-# class ResultsView(generic.DetailView):
-#     model = Question
-#     template_name = 'helpdesk/ticket_staff.html'
-#
-#
-#
-# def vote(request, question_id):
-#     return HttpResponse("You're voting on question %s." % question_id)
-#
-# def vote(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     try:
-#         selected_choice = question.choice_set.get(pk=request.POST['choice'])
-#     except (KeyError, Choice.DoesNotExist):
-#         # Redisplay the question voting form.
-#         return render(request, 'helpdesk/detail.html', {
-#             'question': question,
-#             'error_message': "You didn't select a choice.",
-#         })
-#     else:
-#         selected_choice.votes += 1
-#         selected_choice.save()
-#         # Always return an HttpResponseRedirect after successfully dealing
-#         # with POST data. This prevents data from being posted twice if a
-#         # user hits the Back button.
-#         return HttpResponseRedirect(reverse('helpdesk:results', args=(question.id,)))
-#
-# def results(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'helpdesk/ticket_staff.html', {'question': question})
 
 

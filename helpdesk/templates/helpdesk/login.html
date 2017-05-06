@@ -41,8 +41,11 @@
             data: data,
             cache: false,
             success: function(data){
-                if (data=="approved") {
+                if (data=="approved_user") {
                     window.location.href = "index";
+                }
+                 if (data=="approved_staff") {
+                    window.location.href = "tickets";
                 }
                 $('#error-login').html(data);
             }
@@ -81,6 +84,14 @@
         }
       });
     });
+});
+        $('#loginForm').attr('autocomplete', 'off');
+        $('#remember').change(function() {
+    if (this.checked) {
+        $('#loginForm').attr('autocomplete', 'on');
+    } else {
+        $('#loginForm').attr('autocomplete', 'off');
+    }
 });
     </script>
 </head>
@@ -149,15 +160,15 @@
 											</div>
 										</div>
 									</div>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-lg-12">
-												<div class="text-center">
-													<a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Забыли пароль?</a>
-												</div>
-											</div>
-										</div>
-									</div>
+{#									<div class="form-group">#}
+{#										<div class="row">#}
+{#											<div class="col-lg-12">#}
+{#												<div class="text-center">#}
+{#													<a href="" tabindex="5" class="forgot-password">Забыли пароль?</a>#}
+{#												</div>#}
+{#											</div>#}
+{#										</div>#}
+{#									</div>#}
 								</form>
 								<form id="register-form"  method="POST" role="form" style="display: none;">{% csrf_token %}
 									<div class="form-group">

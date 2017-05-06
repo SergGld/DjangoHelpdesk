@@ -1,19 +1,24 @@
 from django.conf.urls import url
+from . import base,staff,user
 
-from . import views
 
+#base views urls
 urlpatterns = [
-    url(r'^$', views.login_view, name='login'),
-    url(r'^logout/$', views.logout, name='logout'),
-    url(r'^validate_username/$', views.validate_username, name='validate_username'),
-    url(r'^index/$', views.user_homepage, name='index'),
-    # url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='detail'),
-    # url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
-    # url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
-    url(r'^tickets/$', views.ticket_list, name='tickets'),
-    url(r'^tickets/(?P<ticket_id>[0-9]+)/$', views.ticket, name='view'),
-    url(r'^index/(?P<ticket_id>[0-9]+)/$', views.ticket_user, name='view'),
-    # url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
-    url(r'^create/$', views.post_new, name='create'),
-    # url(r'^login/$', views.login_view, name='login'),
+    url(r'^$', base.login_view, name='login'),
+    url(r'^logout/$', base.logout, name='logout'),
+]
+
+#user views urls
+urlpatterns +=[
+    url(r'^index/$', user.user_homepage, name='index'),
+    url(r'^index/(?P<ticket_id>[0-9]+)/$',user.ticket_user, name='view'),
+    url(r'^profile/$', user.user_profile, name='profile'),
+    url(r'^create/$', user.post_new, name='create'),
+]
+
+#staff views urls
+urlpatterns +=[
+    url(r'^tickets/$', staff.ticket_list, name='tickets'),
+    url(r'^tickets/(?P<ticket_id>[0-9]+)/$', staff.ticket, name='view'),
+
 ]

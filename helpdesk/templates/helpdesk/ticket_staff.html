@@ -1,10 +1,22 @@
 {% extends "helpdesk/base.html" %}
+{% load bootstrap %}
 {% block helpdesk_body %}
-<h1>{{ ticket.title }}</h1>
-<p>{{ ticket.message }}</p>
-{#todo form#}
+    <label class="control-label  " for="id_title">Название</label>
+    <input class=" form-control" id="id_title" maxlength="100" name="title" type="text" required="" value="{{ ticket.title }}" readonly>
+    <label class="control-label  " for="id_title">Cообщение</label>
+    <textarea class=" form-control" cols="40" id="ticket-message" name="message" rows="10" required="" readonly>"{{  ticket.message}}"</textarea>
+    <p>Создатель: {{ ticket.user }}, {{ ticket.created }}</p>
+    <hr>
+    {% if ticket.ticketState == 1 %}    {#  OPEN_STATUS  #}
     <form id="login-form"  method="POST" role="form" style="display: block;">{% csrf_token %}
-{{ form.resolution }}
-    <input type="submit" name="res" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+    {{ form|bootstrap }}
+    <input type="submit" name="res" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Отправить">
     </form>
+    {% endif %}
+     {% if ticket.ticketState == 3 %} {#  RESOLVED_STATUS  #}
+     <div class="ticket-answer">
+    <p>Ответил {{ ticket.staff }}, {{ ticket.resolved }}</p>
+<textarea class=" form-control" cols="40" id="resolution" name="message" rows="10" required="" readonly>{{  ticket.resolution}}</textarea>
+    </div>
+    {% endif %}
 {% endblock %}
