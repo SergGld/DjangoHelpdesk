@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from .models import CustomUser, Ticket,Categories
 from django.utils import timezone
