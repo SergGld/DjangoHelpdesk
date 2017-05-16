@@ -13,6 +13,7 @@
                     {% endif %}
                     {% if user|has_role:'staff' %}
 					     <li class="custome-active"><a href="{% url "helpdesk:tickets" %}">Главная</a></li>
+                         <li class="custome-active"><a href="{% url "helpdesk:stats" %}">Статистика</a></li>
                     {% endif %}
                     <li><a href="{% url 'helpdesk:profile' %}">Профиль</a></li>
                     <li><a href="{% url 'helpdesk:logout' %}">Выйти</a></li>

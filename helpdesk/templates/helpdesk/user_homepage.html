@@ -12,19 +12,26 @@
     <label for="tab-nav-2">Решённые</label>
 
     <div class="tabs">
-      <div><h2>На рассмотрении</h2>    <ul>
+      <div><ul class="list-group">
     {% for ticket in user_tickets %}
-        <li>
+        <li class="list-group-item">
+        <div class="user-ticket-link">
             <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
+        </div>
+{#            <input type="submit" name="accept"   class="form-control btn btn-default" value="Открыть">#}
+            <div class="ticket-btn-left">
+            <input type="submit" name="accept"   class="form-control btn btn-success" value="Отозвать">
+            </div>
         </li>
 {#        <div class="excerpt">#}
 {#           {{ticket.message}}#}
 {#        </div>#}
     {% endfor %}
     </ul></div>
-      <div><h2>Решённые</h2>    <ul>
+
+      <div><ul class="list-group">
     {% for ticket in resolved_tickets %}
-        <li>
+        <li class="list-group-item">
             <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
         </li>
 {#        <div class="excerpt">#}

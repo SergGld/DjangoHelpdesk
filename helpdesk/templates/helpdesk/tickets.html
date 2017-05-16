@@ -10,9 +10,11 @@
     <label for="tab-nav-2">Новые</label>
     <input type="radio" name="tabs" id="tab-nav-3">
     <label for="tab-nav-3">Решённые мною</label>
+    <input type="radio" name="tabs" id="tab-nav-4">
+    <label for="tab-nav-4">Ответ не помог</label>
 
     <div class="tabs">
-      <div><h2>Все заявки</h2>    <ul>
+      <div><ul>
     {% for category in categories %}
         <h2><a href="{{ category.id }}">{{ category.name }}</a></h2>
 <ul>
@@ -27,7 +29,7 @@
     </ul>
     {% endfor %}
     </ul></div>
-      <div><h2>Новые</h2>
+      <div>
 <ul>
     {% for ticket in latest_ticket_list %}
         <li>
@@ -38,9 +40,21 @@
 {#        </div>#}
     {% endfor %}
     </ul></div>
-          <div><h2>Решённые мною</h2>    <ul>
+          <div><ul>
 <ul>
     {% for ticket in my_ticket %}
+        <li>
+            <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
+        </li>
+{#        <div class="excerpt">#}
+{#           {{ticket.message}}#}
+{#        </div>#}
+    {% endfor %}
+    </ul>
+    </ul></div>
+              <div><ul>
+<ul>
+    {% for ticket in reopened_tickets %}
         <li>
             <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
         </li>

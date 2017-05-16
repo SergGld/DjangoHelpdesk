@@ -19,4 +19,14 @@
 <textarea class=" form-control" cols="40" id="resolution" name="message" rows="10" required="" readonly>{{  ticket.resolution}}</textarea>
     </div>
     {% endif %}
+    {% if ticket.ticketState == 2 %} {#  REOPENED_STATUS  #}
+     <div class="ticket-answer">
+    <p>Ответил {{ ticket.staff }}, {{ ticket.resolved }}</p>
+<textarea class=" form-control" cols="40" id="resolution" name="message" rows="10" required="" readonly>{{  ticket.resolution}}</textarea>
+     <form id="login-form"  method="POST" role="form" style="display: block;">{% csrf_token %}
+    {{ form|bootstrap }}
+    <input type="submit" name="res" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Отправить">
+    </form>
+    </div>
+    {% endif %}
 {% endblock %}

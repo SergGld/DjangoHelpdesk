@@ -5,12 +5,16 @@
     <input class=" form-control" id="id_title" maxlength="100" name="title" type="text" required="" value="{{ ticket.title }}" readonly>
     <label class="control-label  " for="id_title">Cообщение</label>
     <textarea class=" form-control" cols="40" id="ticket-message" name="message" rows="10" required="" readonly>"{{  ticket.message}}"</textarea>
-    <p>Создатель: {{ ticket.user }}, {{ ticket.created }}</p>
+    <p>Создатель: <strong>{{ ticket.user }}</strong>, {{ ticket.created }}</p>
     <hr>
     {% ifequal ticket.ticketState 3 %}
     <div class="ticket-answer">
-    <p>Ответил {{ ticket.staff }}, {{ ticket.resolved }}</p>
+    <p>Ответил <strong>{{ ticket.staff }}</strong>, {{ ticket.resolved }}</p>
 <textarea class=" form-control" cols="40" id="resolution" name="message" rows="10" required="" readonly>{{  ticket.resolution}}</textarea>
     </div>
+        <form id="user-btns" method="POST" role="form" style="">{% csrf_token %}
+        <input id="btn-accept" type="submit" name="accept"   class="form-control btn btn-success" value="Мне помогло">
+        <input id="btn-reject" type="submit" name="reject"   class="form-control btn btn-warning" value="Не помогло">
+        </form>
     {% endifequal %}
 {% endblock %}

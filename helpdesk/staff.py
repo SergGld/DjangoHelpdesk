@@ -20,6 +20,10 @@ from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.contrib.auth import get_user_model
+from django.db.models import Count
+from django.core import serializers
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 
@@ -45,12 +49,45 @@ def ticket(request,ticket_id):
     })
 
 def ticket_list(request):
+    reopened_tickets=Ticket.objects.filter(staff=request.user).filter(ticketState=Ticket.REOPENED_STATUS)
     latest_ticket_list = Ticket.objects.filter(ticketState=Ticket.OPEN_STATUS).order_by('-created')
     my_ticket = Ticket.objects.filter(staff=request.user).filter(ticketState=Ticket.RESOLVED_STATUS).order_by('-resolved')
     categories=Categories.objects.all()
     # ticket=get_object_or_404(Ticket, pk=ticket_id)
     return render(request, 'helpdesk/tickets.html', {
+        'reopened_tickets': reopened_tickets,
         'my_ticket':my_ticket,
         'categories':categories,
         'latest_ticket_list': latest_ticket_list,
     })
+
+def stats_view(request):
+    # data=Ticket.objects.values('staff_id').annotate(dcount=Count('staff_id'))
+    # print(data)
+    data = Ticket.objects.values('ticketState').annotate(y=Count('ticketState'))
+    count = Ticket.objects.count()
+    # print(data[0]['count'])
+    for i in range(len(data)):
+        # Ticket.STATUS_CHOICES.__str__(data[i]['ticketState'])
+        data[i]['ticketState']={
+    1: 'Open',
+    2: 'Reopened',
+    3: 'Resolved',
+    4: 'Closed',
+}[ data[i]['ticketState']]
+        data[i]['y']=(data[i]['y']/count)*100
+    # data['ticket_State'] = data.pop('name')
+    data = json.dumps(list(data), cls=DjangoJSONEncoder)
+    print(data)
+    # json1_data = json.loads(data)
+
+    # print(json1_data)
+    return render(request, 'helpdesk/stats.html', {'tickets_data':data})
+    # render_template_to_response("helpdesk/stats.html", {"my_data": js_data})
+
+def piestats_view(request):
+    # ticket=get_object_or_404(Ticket, pk=ticket_id)
+    data=Ticket.objects.values('ticketState').annotate(y=Count('ticketState'))
+
+    print(data)
+    return render(request, 'helpdesk/stats.html', {})

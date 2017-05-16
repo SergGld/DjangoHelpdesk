@@ -1,3 +1,6 @@
+#helpdesk-body{
+
+}
 li a {
     color: green;
 }
@@ -152,8 +155,8 @@ body {
 .tabs > div {
   width: 700px;
   position: absolute;
-  border: 2px solid #4EC6DE;
-  padding: 10px 30px 40px;
+  /*border: 2px solid #4EC6DE;*/
+  padding: 10px 0px 40px;
   line-height: 1.4em;
   opacity: 0;
 
@@ -213,4 +216,25 @@ body {
 }
 .ticket-answer{
 	margin-top:50px;
+}
+#user-btns{
+	margin-top:20px;
+}
+.ticket-btn-left{
+	display: inline-block;
+	vertical-align: middle;
+	margin-top:10px;
+	float:right;
+}
+.user-ticket-link{
+	display: inline-block;
+}
+#btn-accept{
+	float:left;
+}
+#btn-accept{
+	float:right;
+}
+.profile-container{
+	width:40%;
 }

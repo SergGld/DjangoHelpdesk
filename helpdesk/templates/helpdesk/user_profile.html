@@ -1,5 +1,9 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
-    <p>Имя: <strong>{{ user }}</strong></p>
-    <p>Должность: <strong>{{ role }}</strong></p>
+    <div class="profile-container">
+    <ul class="list-group">
+        <li class="list-group-item"><p>Имя: <strong>{{ user }}</strong></p></li>
+        <li class="list-group-item"><p>Должность: <strong>{{ role }}</strong></p></li>
+    </ul>
+    </div>
 {% endblock %}

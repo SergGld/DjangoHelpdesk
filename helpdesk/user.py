@@ -20,9 +20,10 @@ from django.contrib import auth
 from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 def user_homepage(request):
-    user_tickets = Ticket.objects.filter(user=request.user).filter(ticketState=Ticket.OPEN_STATUS)
+    user_tickets = Ticket.objects.filter(user=request.user).filter(Q(ticketState=Ticket.OPEN_STATUS) | Q(ticketState=Ticket.REOPENED_STATUS))
     resolved_tickets = Ticket.objects.filter(user=request.user).filter(ticketState=Ticket.RESOLVED_STATUS)
     # ticket=get_object_or_404(Ticket, pk=ticket_id)
     return render(request, 'helpdesk/user_homepage.html', {
@@ -51,6 +52,15 @@ def post_new(request):
 
 def ticket_user(request,ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
+    if request.method == "POST":
+        if 'accept' in request.POST:
+            ticket.ticketState=Ticket.CLOSED_STATUS
+            ticket.save()
+            return HttpResponseRedirect(reverse('helpdesk:index'))
+        elif 'reject' in request.POST:
+            ticket.ticketState = Ticket.REOPENED_STATUS
+            ticket.save()
+            return HttpResponseRedirect(reverse('helpdesk:index'))
 
     # if not _has_access_to_queue(request.user, ticket.queue):
     #     raise PermissionDenied()

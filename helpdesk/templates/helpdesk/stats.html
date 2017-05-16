@@ -1,0 +1,46 @@
+
+{% extends "helpdesk/base.html" %}
+{% block helpdesk_body %}
+	<div id="chart-container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script type='text/javascript'>
+        var t_data = {{ tickets_data|safe }};
+        t_data = JSON.stringify(t_data);
+        t_data=t_data.replace(new RegExp("\"ticketState\":",'g'),"\"name\":")
+        t_data = JSON.parse(t_data)
+            Highcharts.chart('chart-container', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Статистика по заявкам'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Tickets',
+            colorByPoint: true,
+            data: t_data
+        }]
+    });
+    </script>
+{% endblock %}
