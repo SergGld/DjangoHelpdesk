@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>HelpdeskSystem</title>
     {% load staticfiles %}
     {% load widget_tweaks %}
     <link rel="stylesheet" type="text/css" href="{% static 'helpdesk/style.css' %}" />
@@ -43,9 +43,11 @@
             success: function(data){
                 if (data=="approved_user") {
                     window.location.href = "index";
+                    return;
                 }
                  if (data=="approved_staff") {
                     window.location.href = "tickets";
+                    return;
                 }
                 $('#error-login').html(data);
             }

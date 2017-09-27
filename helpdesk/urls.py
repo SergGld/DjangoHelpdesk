@@ -15,6 +15,7 @@ urlpatterns +=[
     url(r'^index/(?P<ticket_id>[0-9]+)/$',user.ticket_user, name='view'),
     url(r'^profile/$', user.user_profile, name='profile'),
     url(r'^create/$', user.post_new, name='create'),
+    url(r'^index/remove/(?P<ticket_id>[0-9]+)$', user.removed_ticket, name='remove'),
 ]
 
 #staff views urls

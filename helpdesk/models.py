@@ -60,6 +60,7 @@ class Ticket(models.Model):
         return self.title
 
 
+
     #Future fields
 
     #adminId = ""

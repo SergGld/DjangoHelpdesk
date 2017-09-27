@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
-from helpdesk.forms import CreateTicketForm, LoginForm, AnswerForm
+from helpdesk.forms import CreateTicketForm, LoginForm, AnswerForm,RemoveTicketForm
 # from .models import Choice, Question
 from helpdesk.models import CustomUser, Ticket,Categories
 from django.contrib.auth import authenticate, login
@@ -83,3 +83,23 @@ def user_profile(request):
         'role': role,
         # 'form': form,
     })
+def removed_ticket(request,ticket_id):
+    """
+                    View for removing ticket.
+    """
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
+    user=request.user
+    if request.method == "POST":
+        ticket.delete()
+        if 'yes' in request.POST:
+            # запись в базу о том что не помогли
+            return HttpResponseRedirect(reverse('helpdesk:index'))
+        elif 'no' in request.POST:
+            # запись в базу о том что не помогли
+            return HttpResponseRedirect(reverse('helpdesk:index'))
+    return render(request, 'helpdesk/removed_ticket.html', {
+
+            'ticket': ticket,
+        })
+
+

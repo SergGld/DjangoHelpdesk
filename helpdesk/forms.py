@@ -72,3 +72,8 @@ class AnswerForm(forms.Form):
     #                     due_date=self.cleaned_data['due_date'],
     #                     )
     #     return ticket
+class RemoveTicketForm(forms.Form):
+    CHOICES = [('select1', 'select 1'),
+               ('select2', 'select 2')]
+
+    choice = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
