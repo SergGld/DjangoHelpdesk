@@ -25,9 +25,9 @@ from django.db.models import Count
 from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.auth.decorators import login_required
 
-
-
+@login_required(login_url='/helpdesk/')
 def ticket(request,ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     form = AnswerForm()
@@ -49,6 +49,7 @@ def ticket(request,ticket_id):
         # 'form': form,
     })
 
+@login_required(login_url='/helpdesk/')
 def ticket_list(request):
     reopened_tickets=Ticket.objects.filter(staff=request.user).filter(ticketState=Ticket.REOPENED_STATUS)
     latest_ticket_list = Ticket.objects.filter(ticketState=Ticket.OPEN_STATUS).order_by('-created')
@@ -62,6 +63,7 @@ def ticket_list(request):
         'latest_ticket_list': latest_ticket_list,
     })
 
+@login_required(login_url='/helpdesk/')
 def stats_view(request):
     # data=Ticket.objects.values('staff_id').annotate(dcount=Count('staff_id'))
     # print(data)
@@ -86,6 +88,7 @@ def stats_view(request):
     return render(request, 'helpdesk/stats.html', {'tickets_data':data})
     # render_template_to_response("helpdesk/stats.html", {"my_data": js_data})
 
+@login_required(login_url='/helpdesk/')
 def piestats_view(request):
     # ticket=get_object_or_404(Ticket, pk=ticket_id)
     data=Ticket.objects.values('ticketState').annotate(y=Count('ticketState'))

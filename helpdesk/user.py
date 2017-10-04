@@ -22,7 +22,9 @@ from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='/helpdesk/')
 def user_homepage(request):
     user_tickets = Ticket.objects.filter(user=request.user).filter(Q(ticketState=Ticket.OPEN_STATUS) | Q(ticketState=Ticket.REOPENED_STATUS))
     resolved_tickets = Ticket.objects.filter(user=request.user).filter(ticketState=Ticket.RESOLVED_STATUS)
@@ -31,7 +33,9 @@ def user_homepage(request):
         'user_tickets': user_tickets,
         'resolved_tickets': resolved_tickets,
     })
+
 @csrf_protect
+@login_required(login_url='/helpdesk/')
 def post_new(request):
     categories=Categories.objects.all()
     # if 'ajax' in request.POST:
@@ -51,6 +55,7 @@ def post_new(request):
         form = CreateTicketForm()
     return render(request, 'helpdesk/create_ticket.html', {'form': form,'categories':categories})
 
+@login_required(login_url='/helpdesk/')
 def ticket_user(request,ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
     if request.method == "POST":
@@ -69,6 +74,8 @@ def ticket_user(request,ticket_id):
         'ticket': ticket,
         # 'form': form,
     })
+
+@login_required(login_url='/helpdesk/')
 def user_profile(request):
     """
             View for user profile page.
@@ -83,6 +90,8 @@ def user_profile(request):
         'role': role,
         # 'form': form,
     })
+
+@login_required(login_url='/helpdesk/')
 def removed_ticket(request,ticket_id):
     """
                     View for removing ticket.
