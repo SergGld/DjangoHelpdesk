@@ -18,9 +18,6 @@ class CreateTicketForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea)
     category=forms.ModelChoiceField(queryset = Categories.objects.all())
     def save(self):
-        # topic = self.cleaned_data['subject']
-        # message = self.cleaned_data['message']
-        # sender = self.cleaned_data['sender']
         ticket = Ticket(title=self.cleaned_data['title'],
                         created=timezone.now(),
                         user=self.user,
@@ -44,34 +41,11 @@ class LoginForm(forms.Form):
     password_reg = forms.CharField(widget=forms.PasswordInput())
     password_again = forms.CharField(widget=forms.PasswordInput())
     role = forms.ChoiceField(choices=ROLES)
+
 class AnswerForm(forms.Form):
-    # def __init__(self, *args, **kwargs):
-    #     self.fields['resolution'].label = "Ответ"
     resolution = forms.CharField(widget=forms.Textarea)
     resolution.label="Ответ"
-    #
-    #
-    # def get_username(self):
-    #     username=self.cleaned_data['username']
-    #     return username
-    #
-    # def get_password(self):
-    #     password = self.cleaned_data['password']
-    #     return password
 
-
-    # def save(self):
-    #     # topic = self.cleaned_data['subject']
-    #     # message = self.cleaned_data['message']
-    #     # sender = self.cleaned_data['sender']
-    #     ticket = Ticket(title=self.cleaned_data['title'],
-    #                     submitter_email=self.cleaned_data['submitter_email'],
-    #                     created=timezone.now(),
-    #                     status=Ticket.OPEN_STATUS,
-    #                     message=self.cleaned_data['message'],
-    #                     due_date=self.cleaned_data['due_date'],
-    #                     )
-    #     return ticket
 class RemoveTicketForm(forms.Form):
     CHOICES = [('select1', 'select 1'),
                ('select2', 'select 2')]
