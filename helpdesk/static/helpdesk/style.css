@@ -246,3 +246,8 @@ body {
 #removeChoiceForm{
 	margin:40px;
 }
+
+.no_ticket{
+	font-size: 10vw;
+	margin-left:30px;
+}
