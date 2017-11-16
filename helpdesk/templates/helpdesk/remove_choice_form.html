@@ -1,7 +1,7 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
     <h2>Удаление заявки "{{ ticket.title }}"</h2>
-    <form id="removeChoiceForm" method="POST" role="form" style="display: block;">{% csrf_token %}
+    <form class="remove-choice-form" method="POST" role="form" style="display: block;">{% csrf_token %}
         <div class="radio">
             <label><input type="radio" value="no" name="optradio" checked>Проблема решилась сама</label>
         </div>
@@ -12,13 +12,4 @@
         <input type="text" name="notdel" onclick="history.back(-1)" id="register-submit" tabindex="4"
            class="form-control btn btn-primary" value="Назад">
     </form>
-
-
-
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script type='text/javascript'>
-        //for js
-    </script>
 {% endblock %}

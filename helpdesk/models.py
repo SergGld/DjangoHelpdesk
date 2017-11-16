@@ -8,13 +8,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import datetime
 
-
+#Category for ticket
 class Categories(models.Model):
     name=models.CharField(max_length=100)
     def __str__(self):
         return self.name
     def tickets(self):
         return Ticket.objects.filter(category=self)
+
 class Ticket(models.Model):
     OPEN_STATUS = 1
     REOPENED_STATUS = 2
@@ -45,35 +46,25 @@ class Ticket(models.Model):
     def __str__(self):
         return self.title
 
+#extended User profile
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone = models.TextField(null=True)
+    telegram = models.TextField(null=True)
+    location = models.CharField(max_length=30, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+
+# def get_fullname(self):
+#     return se
 
 
-    #Future fields
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
-    #adminId = ""
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
-# class Profile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     bio = models.TextField(max_length=500, blank=True)
-#     location = models.CharField(max_length=30, blank=True)
-#     birth_date = models.DateField(null=True, blank=True)
-#
-# @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         Profile.objects.create(user=instance)
-#
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
-#
 
-class CustomUser(User):
-    """User with app settings."""
-    timezone = models.CharField(max_length=50, default='Europe/London')
-
-    # Future fields
-
-    # role =""
-    # workplace=""
-    # Use UserManager to get the create_user method, etc.
-    objects = UserManager()

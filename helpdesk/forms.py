@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from .models import CustomUser, Ticket,Categories
+from .models import Ticket,Categories
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -41,7 +41,7 @@ class LoginForm(forms.Form):
     password_reg = forms.CharField(widget=forms.PasswordInput())
     password_again = forms.CharField(widget=forms.PasswordInput())
     role = forms.ChoiceField(choices=ROLES)
-
+    email = forms.EmailField(widget=forms.EmailInput())
 class AnswerForm(forms.Form):
     resolution = forms.CharField(widget=forms.Textarea)
     resolution.label="Ответ"

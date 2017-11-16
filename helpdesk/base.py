@@ -5,8 +5,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from helpdesk.forms import CreateTicketForm, LoginForm, AnswerForm
-# from .models import Choice, Question
-from helpdesk.models import CustomUser, Ticket,Categories
+from helpdesk.models import Ticket,Categories
 from django.contrib.auth import authenticate, login
 from django.http import Http404
 from django.template import RequestContext, loader
@@ -22,6 +21,7 @@ from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from rolepermissions.checkers import has_role
+from helpdesk.models import Profile
 
 
 
@@ -66,9 +66,11 @@ def login_view(request):
               username = request.POST.get('username_reg', '')
               password = request.POST.get('password_reg', '')
               role = request.POST.get('role','')
+              email=request.POST.get('email','')
               try:
                     user = get_user_model().objects.create_user(username=username,
                                                   password=password)
+                    user.profile.email=email
                     print(role)
                     assign_role(user, role)
                     user.save()

@@ -1,7 +1,7 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
 
-    <div class="tabbed">
+    <div class="ticket-tabbed">
 <h1>Заявки</h1>
 <hr>
     <input type="radio" name="tabs" id="tab-nav-1" checked>
@@ -13,7 +13,7 @@
     <input type="radio" name="tabs" id="tab-nav-4">
     <label for="tab-nav-4">Ответ не помог</label>
 
-    <div class="tabs">
+    <div class="ticket-tabs">
       <div><ul>
     {% for category in categories %}
         <h2><a href="{{ category.id }}">{{ category.name }}</a></h2>

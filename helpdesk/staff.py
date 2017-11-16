@@ -5,8 +5,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from helpdesk.forms import CreateTicketForm, LoginForm, AnswerForm
-# from .models import Choice, Question
-from helpdesk.models import CustomUser, Ticket,Categories
+from helpdesk.models import Ticket,Categories
 from django.contrib.auth import authenticate, login
 from django.http import Http404
 from django.template import RequestContext, loader

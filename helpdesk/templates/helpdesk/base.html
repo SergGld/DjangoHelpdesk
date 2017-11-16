@@ -12,20 +12,17 @@
     <script src="{% static 'helpdesk/jsFunctions.js' %}"></script>
 
 </head>
-<body id="helpdesk-body">
+<body>
 
-    <div id='container' class="container">
-        <div id='header' class="row">
-
+    <div class="container main-container">
+        <div class="row main-menu">
             {% include "helpdesk/navigation.html" %}
         </div>
-
-        <div id='body' class="row">
+        <div class="row main-content">
             {% block helpdesk_body %}{% endblock %}
         </div>
 
-        <div id='footer' class="row">
-{#            <div class="col-md-2">{% include "helpdesk/attribution.html" %}</div>#}
+        <div class="row footer">
         </div>
     </div>
 </body>

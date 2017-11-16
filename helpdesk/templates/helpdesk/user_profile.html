@@ -1,10 +1,62 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
+        <div class="row profile-head">
+        <div class="col-md-4 profile-image-wrap">
+            <div class="row profile-img">
+        <img class="profile-image" src="https://www.poi.dvo.ru/drupal/sites/default/files/default_images/default-avatar-250x250.png" style="cursor:pointer" title="Нажмите для смены аватара" data-toggle="modal" data-target="" alt="SG">
+            </div>
+            <div class="row profile-role-wrap">
+{#        <span class="profile-role">{{ role }}</span>#}
+                <span class="user-firstname user-info">{{ user.first_name }}</span>
+                <input form="edit-user-form" name="first-name" class="profile-header-input profile-hidden edit-user" value="{{ user.first_name }}">
+                </div>
+            </div>
+        <div class="col-md-8 profile-fullname-wrap">
+        <span class="user-info profile-fullname">{{ user.username }}</span>
+            <div class="edit-user-container">
+            <input form="edit-user-form" name="login" class="profile-hidden edit-user" value="{{ user.username }}">
+            </div>
+        <a href="javascript:editProfile();" class="edit-button">Редактировать</a>
+            <form id="edit-user-form" method="POST" class="profile-hidden edit-user">{% csrf_token %}
+            <button type="submit" class="save btn btn-default" onclick="editProfile();">Готово</button>
+        </form>
+            </div>
+    </div>
     <div class="profile-container">
-    <ul class="list-group">
-        <li class="list-group-item"><p>Имя: <strong>{{ user }}</strong></p></li>
-        <li class="list-group-item"><p>Должность: <strong>{{ role }}</strong></p></li>
-        <li class="list-group-item"><p>ФИО: <strong>{{ user. }}</strong></p></li>
-    </ul>
+        <div class="row profile-body">
+     <div class="col-md-6 profile-additional">
+         <div class="user-data-row">
+             <label>Telegram:</label>
+         <span class="user-info">{{ user.profile.telegram }}</span>
+             <input form="edit-user-form" name="telegram" class="profile-body-input profile-hidden edit-user" value="{{ user.profile.telegram }}">
+             </div>
+         <div class="user-data-row">
+             <label>Номер телефона:</label>
+             <input form="edit-user-form"  name="phone-number" class="profile-body-input profile-hidden edit-user" value="{{ user.profile.phone }}">
+         <span class="user-info">{{ user.profile.phone }}</span></div>
+{#         <a href="javascript:editProfile();" class="md_modal_action">Привязать telegram</a>#}
+{#         <li class="profile-fullname">telegram</li>#}
+{#         <li class="profile-fullname">phone</li>#}
+     </div>
+        <div class="col-md-6 profile-settings-container">
+            <div class="profile-settings">
+            <li class="list-group-item">
+                        Отключить уведомления на сайте
+                        <div class="material-switch pull-right">
+                            <input id="notification-switcher" name="notification-switcher" type="checkbox"/>
+                            <label for="notification-switcher" class="label-info"></label>
+                        </div>
+                    </li>
+            <li class="list-group-item">
+                        Отключить уведомления в telegram
+                        <div class="material-switch pull-right">
+                            <input id="xxx-switcher" name="someSwitchOption002" type="checkbox"/>
+                            <label for="xxx-switcher" class="label-info"></label>
+                        </div>
+                    </li>
+                </div>
+        </div>
+            </div>
+
     </div>
 {% endblock %}

@@ -5,8 +5,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from helpdesk.forms import CreateTicketForm, LoginForm, AnswerForm,RemoveTicketForm
-# from .models import Choice, Question
-from helpdesk.models import CustomUser, Ticket,Categories
+from helpdesk.models import Ticket,Categories
 from django.contrib.auth import authenticate, login
 from django.http import Http404
 from django.template import RequestContext, loader
@@ -26,12 +25,17 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/helpdesk/')
 def user_homepage(request):
+    have_resolved_tickets=True;
     user_tickets = Ticket.objects.filter(user=request.user).filter(Q(ticketState=Ticket.OPEN_STATUS) | Q(ticketState=Ticket.REOPENED_STATUS))
     resolved_tickets = Ticket.objects.filter(user=request.user).filter(ticketState=Ticket.RESOLVED_STATUS)
     # ticket=get_object_or_404(Ticket, pk=ticket_id)
+    if (resolved_tickets.count()==0):
+        have_resolved_tickets=False;
+
     return render(request, 'helpdesk/user_homepage.html', {
         'user_tickets': user_tickets,
         'resolved_tickets': resolved_tickets,
+        'have_resolved_tickets':have_resolved_tickets,
     })
 
 @csrf_protect
@@ -85,8 +89,14 @@ def user_profile(request):
         role = get_user_roles(user)[0].name
     except:
         role = 'Администратор'
+    if request.method == "POST":
+        user.first_name=request.POST.get('first-name','')
+        user.profile.phone = request.POST.get('phone-number', '')
+        user.username=request.POST.get('login','')
+        user.profile.telegram = request.POST.get('telegram', '')
+        user.save();
     return render(request, 'helpdesk/user_profile.html', {
-        'username': user,
+        'user': user,
         'role': role,
         # 'form': form,
     })
@@ -106,7 +116,7 @@ def removed_ticket(request,ticket_id):
         elif 'no' in request.POST:
             # запись в базу о том что не помогли
             return HttpResponseRedirect(reverse('helpdesk:index'))
-    return render(request, 'helpdesk/removed_ticket.html', {
+    return render(request, 'helpdesk/remove_choice_form.html', {
 
             'ticket': ticket,
         })

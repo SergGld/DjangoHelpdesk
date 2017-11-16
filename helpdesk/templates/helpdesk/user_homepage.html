@@ -1,6 +1,6 @@
 {% extends "helpdesk/base.html" %}
 {% block helpdesk_body %}
-<div class="tabbed">
+<div class="ticket-tabbed">
 <div class="user-message">
     <p>{{ user_message }}</p>
 </div>
@@ -11,7 +11,7 @@
     <input type="radio" name="tabs" id="tab-nav-2">
     <label for="tab-nav-2">Решённые</label>
 
-    <div class="tabs">
+    <div class="tabs user-tickets-container">
       <div><ul class="list-group">
     {% for ticket in user_tickets %}
         <li class="list-group-item">
@@ -20,7 +20,7 @@
         </div>
             <div class="ticket-btn-left">
                 <a href="remove/{{ ticket.id }}">
-            <input type="text"    class="form-control btn btn-success" value="Отозвать">
+            <input type="text"    class="form-control btn btn-primary" value="Отозвать">
                 </a>
             </div>
         </li>
@@ -29,18 +29,23 @@
 {#        </div>#}
     {% endfor %}
     </ul></div>
+    {% if have_resolved_tickets %}
+      <div class="user-resolved-ticket">
+      <h2>Решённые заявки</h2>
+          <ul class="list-group">
 
-      <div><ul class="list-group">
     {% for ticket in resolved_tickets %}
-        <li class="list-group-item">
+        <li class="resolvet-tickets list-group-item">
             <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
         </li>
 {#        <div class="excerpt">#}
 {#           {{ticket.message}}#}
 {#        </div>#}
     {% endfor %}
-    </ul></div>
+    </ul></div>{% endif %}
     </div>
   </div>
-
+{% if no_tickets %}
+<div class="no_ticket">У вас нет заявок, вы можете <a href="{% url 'helpdesk:create' %}">Создать заявку</a></div>
+{% endif %}
 {% endblock %}
