@@ -61,7 +61,13 @@ def ticket_list(request):
         'categories':categories,
         'latest_ticket_list': latest_ticket_list,
     })
-
+@login_required(login_url='/helpdesk/')
+def category_view(request,category_id):
+    category=get_object_or_404(Categories, pk=category_id)
+    category_tickets = category.tickets().order_by('-created')
+    return render(request, 'helpdesk/category_tickets.html', {
+        'category_tickets': category_tickets,
+    })
 @login_required(login_url='/helpdesk/')
 def stats_view(request):
     # data=Ticket.objects.values('staff_id').annotate(dcount=Count('staff_id'))

@@ -1,0 +1,11 @@
+{% extends "helpdesk/base.html" %}
+{% block helpdesk_body %}
+
+    <div class="ticket-tabbed">
+<h1>Заявки</h1>
+<hr>
+    {% for ticket in category_tickets %}
+            <h3><a href="/helpdesk/tickets/{{ ticket.id }}">{{ ticket.title }}</a></h3>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -14,19 +14,12 @@
     <label for="tab-nav-4">Ответ не помог</label>
 
     <div class="ticket-tabs">
-      <div><ul>
+      <div class="staff-all-tickets">
+      <p>Категории</p>
+          <ul>
     {% for category in categories %}
-        <h2><a href="{{ category.id }}">{{ category.name }}</a></h2>
-<ul>
-    {% for ticket in category.tickets %}
-        <li>
-            <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
-        </li>
-{#        <div class="excerpt">#}
-{#           {{ticket.message}}#}
-{#        </div>#}
-    {% endfor %}
-    </ul>
+        <h2><a href="category/{{ category.id }}">{{ category.name }} ({{ category.tickets|length }})</a></h2>
+
     {% endfor %}
     </ul></div>
       <div>

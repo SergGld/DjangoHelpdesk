@@ -20,6 +20,7 @@ urlpatterns +=[
 
 #staff views urls
 urlpatterns +=[
+    url(r'^tickets/category/(?P<category_id>[0-9]+)/$', staff.category_view, name='category'),
     url(r'^tickets/$', staff.ticket_list, name='tickets'),
     url(r'^tickets/(?P<ticket_id>[0-9]+)/$', staff.ticket, name='view'),
     url(r'^stats/$', staff.stats_view, name='stats'),

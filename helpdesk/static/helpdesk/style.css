@@ -248,14 +248,32 @@ body {
 	margin-top:20px;
 }
 .ticket-btn-left{
-	display: inline-block;
+	display: inline-flex;
 	vertical-align: middle;
-	margin-top:10px;
-	float:right;
+	/*margin-top:10px;*/
+float:right;
 }
 .user-ticket-link{
-	display: inline-block;
+	font-size:25px;
+	text-align: left;
+	vertical-align: text-bottom;
+	line-height: 0.8px;
 }
+.user-ticket-notres{
+	background-color:white;
+	border: 1px solid rgba(78, 110, 128, 0.94);
+	padding:10px;
+	vertical-align: text-bottom;
+}
+.user-ticket{
+	text-align: left;
+}
+.clearfix { display: block; }
+.clearfix:after { content: ""; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; margin: 0; padding: 0; }
+/*.user-ticket-link{*/
+	/*display: inline-flex;*/
+	/*flex-wrap: nowrap;*/
+/*}*/
 .custom-btn-group{
 	display: inline-flex;
 	align-items: center;
@@ -408,4 +426,10 @@ margin:auto;
 	margin:40px;
 }
 
+
+/*Staff tickets view*/
+.staff-all-tickets p{
+	font-size: 2em;
+	font-weight: bold;
+}
 

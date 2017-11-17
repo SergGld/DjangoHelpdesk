@@ -11,24 +11,23 @@
     <input type="radio" name="tabs" id="tab-nav-2">
     <label for="tab-nav-2">Решённые</label>
 
-    <div class="tabs user-tickets-container">
-      <div><ul class="list-group">
+    <div class="ticket-tabs user-tickets-container">
+      <div>
     {% for ticket in user_tickets %}
-        <li class="list-group-item">
-        <div class="user-ticket-link">
-            <h3><a href="{{ ticket.id }}">{{ ticket.title }}</a></h3>
-        </div>
+        <div class="clearfix user-ticket-notres">
+            <a class="user-ticket-link" href="{{ ticket.id }}">{{ ticket.title }}</a>
             <div class="ticket-btn-left">
                 <a href="remove/{{ ticket.id }}">
             <input type="text"    class="form-control btn btn-primary" value="Отозвать">
                 </a>
             </div>
-        </li>
+
+        </div>
 {#        <div class="excerpt">#}
 {#           {{ticket.message}}#}
 {#        </div>#}
     {% endfor %}
-    </ul></div>
+    </div>
     {% if have_resolved_tickets %}
       <div class="user-resolved-ticket">
       <h2>Решённые заявки</h2>
