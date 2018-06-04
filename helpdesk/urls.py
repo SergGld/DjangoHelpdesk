@@ -7,6 +7,7 @@ from . import base,staff,user
 urlpatterns = [
     url(r'^$', base.login_view, name='login'),
     url(r'^logout/$', base.logout, name='logout'),
+    url(r'^telegram/$', base.test_telegram, name='login'),
 ]
 
 #user views urls
@@ -16,6 +17,7 @@ urlpatterns +=[
     url(r'^profile/$', user.user_profile, name='profile'),
     url(r'^create/$', user.post_new, name='create'),
     url(r'^index/remove/(?P<ticket_id>[0-9]+)$', user.removed_ticket, name='remove'),
+    url(r'^index/chat/$', user.telegram_chat, name='chat'),
 ]
 
 #staff views urls

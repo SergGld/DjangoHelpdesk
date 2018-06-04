@@ -22,7 +22,21 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from rolepermissions.checkers import has_role
 from helpdesk.models import Profile
+import subprocess
+import paramiko
 
+def test_telegram(request):
+    # subprocess.call("php helpdesk/telegram-site-helper-install.php")
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.connect('ssh.localhost:8000/helpdesk')
+    stdin, stdout, stderr = client.exec_command('ls -l')
+    return HttpResponse('Ваша заявка передана на рассмотрение', content_type='text/html')
+    # if you want output
+    # proc = subprocess.Popen("telegram-site-helper-install.php", shell=True,
+    #                         stdout=subprocess.PIPE)
+    # script_response = proc.stdout.read()
+    # return "hi"
 
 
 

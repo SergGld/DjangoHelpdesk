@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+import requests
 import datetime
 
 #Category for ticket
@@ -67,4 +68,16 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-
+def update_from_bot():
+    bot_link="https://api.telegram.org/bot500627246:AAEUFvb0JgyCnvlNVkoTd25iH8FgSghvGpo/getupdates";
+    result = requests.get(bot_link)
+    print(result)
+    def save(self):
+        ticket = Ticket(title=self.cleaned_data['title'],
+                        created=timezone.now(),
+                        user=self.user,
+                        category=self.cleaned_data['category'],
+                        ticketState=Ticket.OPEN_STATUS,
+                        message=self.cleaned_data['message'],
+                        )
+        return ticket

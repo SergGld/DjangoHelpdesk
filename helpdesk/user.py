@@ -101,6 +101,8 @@ def user_profile(request):
         # 'form': form,
     })
 
+
+
 @login_required(login_url='/helpdesk/')
 def removed_ticket(request,ticket_id):
     """
@@ -122,3 +124,8 @@ def removed_ticket(request,ticket_id):
         })
 
 
+@login_required(login_url='/helpdesk/')
+def telegram_chat(request):
+    return render(request, 'helpdesk/telegram-chat.html', {
+
+    })
